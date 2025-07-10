@@ -360,13 +360,21 @@ class DagsterObjectsList:
             else dagster_def_list
         )
         return_list = []
+        _src_automation_condition = automation_condition
         for dagster_def in dagster_def_list.loaded_defs:
+
+            try:
+                if dagster_def.automation_condition is not None:
+                    automation_condition = dagster_def.automation_condition
+                else:
+                    automation_condition = _src_automation_condition
+            except:
+                automation_condition = _src_automation_condition
+
             if isinstance(dagster_def, AssetsDefinition):
-                automation_condition_override = dagster_def.get_asset_spec(dagster_def.key).automation_condition
                 new_asset = dagster_def.map_asset_specs(
                     _spec_mapper_disallow_group_override(
-                        group_name,
-                        automation_condition_override if automation_condition_override else automation_condition
+                        group_name, automation_condition
                     )
                 ).with_attributes(
                     backfill_policy=backfill_policy, freshness_policy=freshness_policy
