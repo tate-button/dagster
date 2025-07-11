@@ -351,6 +351,7 @@ class DagsterObjectsList:
         group_name: Optional[str],
         freshness_policy: Optional[FreshnessPolicy],
         automation_condition: Optional[AutomationCondition],
+        override_automation_condition: Optional[bool],
         backfill_policy: Optional[BackfillPolicy],
     ) -> "DagsterObjectsList":
         dagster_def_list = self.assets_with_loadable_prefix(key_prefix) if key_prefix else self
@@ -363,7 +364,7 @@ class DagsterObjectsList:
         for dagster_def in dagster_def_list.loaded_defs:
             if isinstance(dagster_def, AssetsDefinition):
                 new_asset = dagster_def.map_asset_specs(
-                    _spec_mapper_disallow_group_override(group_name, automation_condition)
+                    _spec_mapper_disallow_group_override(group_name, automation_condition, override_automation_condition)
                 ).with_attributes(
                     backfill_policy=backfill_policy, freshness_policy=freshness_policy
                 )
@@ -376,7 +377,7 @@ class DagsterObjectsList:
                 return_list.append(dagster_def.with_attributes(group_name=group_name))
             elif isinstance(dagster_def, AssetSpec):
                 return_list.append(
-                    _spec_mapper_disallow_group_override(group_name, automation_condition)(
+                    _spec_mapper_disallow_group_override(group_name, automation_condition, override_automation_condition)(
                         dagster_def
                     )
                 )
@@ -406,7 +407,7 @@ class DagsterObjectsList:
 
 
 def _spec_mapper_disallow_group_override(
-    group_name: Optional[str], automation_condition: Optional[AutomationCondition]
+    group_name: Optional[str], automation_condition: Optional[AutomationCondition], override_automation_condition: Optional[bool] = None,
 ) -> Callable[[AssetSpec], AssetSpec]:
     def _inner(spec: AssetSpec) -> AssetSpec:
         if (
@@ -419,7 +420,7 @@ def _spec_mapper_disallow_group_override(
                 f"Asset spec {spec.key.to_user_string()} has group name {spec.group_name}, which conflicts with the group name {group_name} provided in load_assets_from_modules."
             )
         passed_automation_condition = automation_condition if automation_condition else ...
-        if spec.automation_condition:
+        if spec.automation_condition and not override_automation_condition:
             passed_automation_condition = spec.automation_condition
         return spec.replace_attributes(
             group_name=group_name if group_name else ...,
