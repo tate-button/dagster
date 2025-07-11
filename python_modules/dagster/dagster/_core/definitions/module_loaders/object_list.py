@@ -360,22 +360,10 @@ class DagsterObjectsList:
             else dagster_def_list
         )
         return_list = []
-        _src_automation_condition = automation_condition
         for dagster_def in dagster_def_list.loaded_defs:
-
-            try:
-                if dagster_def.automation_condition is not None:
-                    automation_condition = dagster_def.automation_condition
-                else:
-                    automation_condition = _src_automation_condition
-            except:
-                automation_condition = _src_automation_condition
-
             if isinstance(dagster_def, AssetsDefinition):
                 new_asset = dagster_def.map_asset_specs(
-                    _spec_mapper_disallow_group_override(
-                        group_name, automation_condition
-                    )
+                    _spec_mapper_disallow_group_override(group_name, automation_condition)
                 ).with_attributes(
                     backfill_policy=backfill_policy, freshness_policy=freshness_policy
                 )
@@ -430,9 +418,12 @@ def _spec_mapper_disallow_group_override(
             raise DagsterInvalidDefinitionError(
                 f"Asset spec {spec.key.to_user_string()} has group name {spec.group_name}, which conflicts with the group name {group_name} provided in load_assets_from_modules."
             )
+        passed_automation_condition = automation_condition if automation_condition else ...
+        if spec.automation_condition:
+            passed_automation_condition = spec.automation_condition
         return spec.replace_attributes(
             group_name=group_name if group_name else ...,
-            automation_condition=automation_condition if automation_condition else ...,
+            automation_condition=passed_automation_condition,
         )
 
     return _inner
