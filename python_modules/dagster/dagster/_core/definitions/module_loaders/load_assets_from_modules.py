@@ -62,6 +62,7 @@ def load_assets_from_modules(
     legacy_freshness_policy: Optional[LegacyFreshnessPolicy] = None,
     auto_materialize_policy: Optional[AutoMaterializePolicy] = None,
     automation_condition: Optional[AutomationCondition] = None,
+    dont_override_automation_condition: Optional[bool] = None,
     backfill_policy: Optional[BackfillPolicy] = None,
     source_key_prefix: Optional[CoercibleToAssetKeyPrefix] = None,
     include_specs: bool = False,
@@ -116,6 +117,7 @@ def load_assets_from_modules(
             automation_condition=resolve_automation_condition(
                 automation_condition, auto_materialize_policy
             ),
+            dont_override_automation_condition=dont_override_automation_condition,
             backfill_policy=check.opt_inst_param(
                 backfill_policy, "backfill_policy", BackfillPolicy
             ),
@@ -131,6 +133,7 @@ def load_assets_from_current_module(
     legacy_freshness_policy: Optional[LegacyFreshnessPolicy] = None,
     auto_materialize_policy: Optional[AutoMaterializePolicy] = None,
     automation_condition: Optional[AutomationCondition] = None,
+    dont_override_automation_condition: Optional[bool] = None,
     backfill_policy: Optional[BackfillPolicy] = None,
     source_key_prefix: Optional[CoercibleToAssetKeyPrefix] = None,
     include_specs: bool = False,
@@ -170,6 +173,7 @@ def load_assets_from_current_module(
         automation_condition=resolve_automation_condition(
             automation_condition, auto_materialize_policy
         ),
+        dont_override_automation_condition=dont_override_automation_condition,
         backfill_policy=backfill_policy,
         source_key_prefix=source_key_prefix,
         include_specs=include_specs,
@@ -184,6 +188,7 @@ def load_assets_from_package_module(
     legacy_freshness_policy: Optional[LegacyFreshnessPolicy] = None,
     auto_materialize_policy: Optional[AutoMaterializePolicy] = None,
     automation_condition: Optional[AutomationCondition] = None,
+    dont_override_automation_condition: Optional[bool] = None,
     backfill_policy: Optional[BackfillPolicy] = None,
     source_key_prefix: Optional[CoercibleToAssetKeyPrefix] = None,
     include_specs: bool = False,
@@ -220,6 +225,7 @@ def load_assets_from_package_module(
         legacy_freshness_policy=legacy_freshness_policy,
         auto_materialize_policy=auto_materialize_policy,
         automation_condition=automation_condition,
+        dont_override_automation_condition=dont_override_automation_condition,
         backfill_policy=backfill_policy,
         source_key_prefix=source_key_prefix,
         include_specs=include_specs,
@@ -233,6 +239,7 @@ def load_assets_from_package_name(
     *,
     legacy_freshness_policy: Optional[LegacyFreshnessPolicy] = None,
     auto_materialize_policy: Optional[AutoMaterializePolicy] = None,
+    dont_override_automation_condition: Optional[bool] = None,
     backfill_policy: Optional[BackfillPolicy] = None,
     source_key_prefix: Optional[CoercibleToAssetKeyPrefix] = None,
     include_specs: bool = False,
@@ -267,6 +274,7 @@ def load_assets_from_package_name(
         key_prefix=key_prefix,
         legacy_freshness_policy=legacy_freshness_policy,
         auto_materialize_policy=auto_materialize_policy,
+        dont_override_automation_condition=dont_override_automation_condition,
         backfill_policy=backfill_policy,
         source_key_prefix=source_key_prefix,
         include_specs=include_specs,
