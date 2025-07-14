@@ -81,6 +81,8 @@ def load_assets_from_modules(
             all the loaded assets.
         automation_condition (Optional[AutomationCondition]): AutomationCondition to apply
             to all the loaded assets.
+        dont_override_automation_condition (Optional[bool]): If loaded assets have an automation condition defined,
+            don't override it with the module level automation_condition.
         backfill_policy (Optional[AutoMaterializePolicy]): BackfillPolicy to apply to all the loaded assets.
         source_key_prefix (bool): Prefix to prepend to the keys of loaded SourceAssets. The returned
             assets will be copies of the loaded objects, with the prefix prepended.
@@ -152,6 +154,8 @@ def load_assets_from_current_module(
             assets.
         automation_condition (Optional[AutomationCondition]): AutomationCondition to apply
             to all the loaded assets.
+        dont_override_automation_condition (Optional[bool]): If loaded assets have an automation condition defined,
+            don't override it with the module level automation_condition.
         backfill_policy (Optional[AutoMaterializePolicy]): BackfillPolicy to apply to all the loaded assets.
         source_key_prefix (bool): Prefix to prepend to the keys of loaded SourceAssets. The returned
             assets will be copies of the loaded objects, with the prefix prepended.
@@ -210,6 +214,8 @@ def load_assets_from_package_module(
             assets.
         automation_condition (Optional[AutomationCondition]): AutomationCondition to apply
             to all the loaded assets.
+        dont_override_automation_condition (Optional[bool]): If loaded assets have an automation condition defined,
+            don't override it with the module level automation_condition.
         backfill_policy (Optional[AutoMaterializePolicy]): BackfillPolicy to apply to all the loaded assets.
         source_key_prefix (bool): Prefix to prepend to the keys of loaded SourceAssets. The returned
             assets will be copies of the loaded objects, with the prefix prepended.
@@ -259,6 +265,8 @@ def load_assets_from_package_name(
             assets.
         auto_materialize_policy (Optional[AutoMaterializePolicy]): AutoMaterializePolicy to apply
             to all the loaded assets.
+        dont_override_automation_condition (Optional[bool]): If loaded assets have an automation condition defined,
+            don't override it with the module level automation_condition.
         backfill_policy (Optional[AutoMaterializePolicy]): BackfillPolicy to apply to all the loaded assets.
         source_key_prefix (bool): Prefix to prepend to the keys of loaded SourceAssets. The returned
             assets will be copies of the loaded objects, with the prefix prepended.
